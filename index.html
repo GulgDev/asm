@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+        <script src="index.js"></script>
+    </head>
+    <body>
+        <textarea id="editor"></textarea>
+        <div id="calculator">
+            <span id="calculator-display">0123456789</span>
+            <div id="calculator-buttons">
+                <div class="calculator-buttons-row">
+                    <div>
+                        <span class="calculator-button" onclick="calc.input(1)">1</span>
+                        <span class="calculator-button" onclick="calc.input(2)">2</span>
+                        <span class="calculator-button" onclick="calc.input(3)">3</span>
+                    </div>
+                    <div>
+                        <span class="calculator-button calculator-button-special" onclick="calc.input(11)">+</span>
+                        <span class="calculator-button calculator-button-special" onclick="calc.input(12)">-</span>
+                    </div>
+                </div>
+                <div class="calculator-buttons-row">
+                    <div>
+                        <span class="calculator-button" onclick="calc.input(4)">4</span>
+                        <span class="calculator-button" onclick="calc.input(5)">5</span>
+                        <span class="calculator-button" onclick="calc.input(6)">6</span>
+                    </div>
+                    <div>
+                        <span class="calculator-button calculator-button-special" onclick="calc.input(13)">*</span>
+                        <span class="calculator-button calculator-button-special" onclick="calc.input(14)">/</span>
+                    </div>
+                </div>
+                <div class="calculator-buttons-row">
+                    <div>
+                        <span class="calculator-button" onclick="calc.input(7)">7</span>
+                        <span class="calculator-button" onclick="calc.input(8)">8</span>
+                        <span class="calculator-button" onclick="calc.input(9)">9</span>
+                    </div>
+                    <div>
+                        <span class="calculator-button calculator-button-special" onclick="calc.input(10)">=</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
