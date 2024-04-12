@@ -11,7 +11,7 @@
     border: 1px solid #ccc;
     background-color: #eee;
     width: 350px;
-    height: 380px;
+    height: 420px;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -44,6 +44,12 @@
 .calculator-buttons-row > div {
     display: flex;
     gap: 10px;
+}
+
+.calculator-placeholder {
+    display: inline-block;
+    height: 60px;
+    width: 50px;
 }
 
 .calculator-button {

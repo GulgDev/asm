@@ -1,21 +1,9 @@
-export class Reg {
-    static IP = 0;
-    static A = 1;
-    static B = 2;
-    static C = 3;
-    static D = 4;
-    static IN = 5;
-    static OUT = 6;
-}
-
+import { REG } from "./const.js";
+import { parse } from "./parser.js";
 
 export class Emulator {
     pos = 0;
-    reg = Object.fromEntries(Object.keys(Reg).map((reg) => [reg, 0]));
-
-    get ip() {
-        return this.reg[Reg.IP];
-    }
+    reg = Object.fromEntries(Object.values(REG).map((reg) => [reg, 0]));
 
     mov_RR(regA, regB) {
         this.reg[regA] = this.reg[regB];
@@ -26,18 +14,22 @@ export class Emulator {
     }
 
     jmp(pos) {
-        this.mov_RV(Reg.IP, pos);
+        this.mov_RV(REG.IP, pos);
+    }
+
+    reset() {
+        for (const reg in this.reg)
+            this.reg[reg] = 0;
     }
 
     exec(code) {
-        const program = [];
+        const program = parse(code);
         const programSize = program.length;
-
-        while (this.ip < programSize) {
-            const cmd = program[++this.ip];
-            
+        this.reg[REG.IP] = 0;
+        while (this.reg[REG.IP] < programSize) {
+            const { op, args } = program[this.reg[REG.IP]++];
+            if (op !== "nop" && op !== "err")
+                this[op].apply(this, args);
         }
-
-        this.postExec?.();
     }
 }
