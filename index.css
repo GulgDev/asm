@@ -3,7 +3,14 @@
     src: url(digital-7.ttf);
 }
 
+body {
+    margin: 0;
+}
+
 #calculator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

@@ -11,33 +11,55 @@ const commands = {
         mov_RR: [ARG.REG, ARG.REG],
         mov_RV: [ARG.REG, ARG.VAL]
     },
+    add: {
+        add_RR: [ARG.REG, ARG.REG],
+        add_RV: [ARG.REG, ARG.VAL]
+    },
+    sub: {
+        sub_RR: [ARG.REG, ARG.REG],
+        sub_RV: [ARG.REG, ARG.VAL]
+    },
     jmp: {
         jmp: [ARG.LBL]
+    },
+    jz: {
+        jz: [ARG.LBL]
+    },
+    jnz: {
+        jnz: [ARG.LBL]
+    },
+    jlz: {
+        jlz: [ARG.LBL]
     }
 };
 
-function parseArg(labels, type, arg) {
+const LABEL_REGEX = /^[a-z_][a-z0-9_]*$/;
+
+function parseArg(type, arg) {
     switch (type) {
         case ARG.REG:
             if (/^[abcd]|in|out$/.test(arg))
                 return REG[arg.toUpperCase()];
             break;
         case ARG.VAL:
-            return Number.parseInt(arg) ?? parseArg(ARG.REG, arg);
+            return /^-?[0-9]+$/.test(arg) ? Number.parseInt(arg) : parseArg(ARG.REG, arg);
         case ARG.LBL:
-            return labels[arg];
+            if (LABEL_REGEX.test(arg))
+                return arg;
+            break;
     }
 }
 
 export function parse(code) {
     const program = [];
     const labels = {};
+    const unresolvedJumps = [];
     const lines = code.split("\n");
     for (const lineNumber in lines) {
         let line = lines[lineNumber].replace(/;.+$/, "").trim();
         if (line.startsWith(".")) {
             const label = line.slice(1);
-            if (/^[a-z_][a-z0-9_]*$/.test(label) && !labels[label]) {
+            if (LABEL_REGEX.test(label) && !labels[label]) {
                 labels[label] = lineNumber;
                 program.push({ op: "nop" });
                 continue;
@@ -66,7 +88,7 @@ export function parse(code) {
                 continue;
             parsedArgs = [];
             for (let i = 0; i < argc; ++i) {
-                const arg = parseArg(labels, argTypes[i], args[i]);
+                const arg = parseArg(argTypes[i], args[i]);
                 if (arg === undefined)
                     continue parseArgs;
                 parsedArgs.push(arg);
@@ -74,10 +96,25 @@ export function parse(code) {
             op = decl;
             break;
         }
-        if (op)
+        if (op) {
+            const labelArgs = info[op].map((argType, i) => ({ argType, i })).filter(({ argType }) => argType === ARG.LBL).map(({ i }) => i);
+            if (labelArgs.length > 0)
+                unresolvedJumps.push({ i: program.length, labelArgs });
             program.push({ op, args: parsedArgs });
-        else
+        } else
             program.push({ op: "err", msg: "Wrong arguments" });
+    }
+    for (const { i, labelArgs } of unresolvedJumps) {
+        const { args } = program[i];
+        for (const j of labelArgs) {
+            const arg = args[j];
+            if (labels[arg])
+                args[j] = labels[arg];
+            else {
+                program[i] = { op: "err", msg: "Unresolved label" };
+                break;
+            }
+        }
     }
     return program;
 }
