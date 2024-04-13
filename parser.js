@@ -58,7 +58,7 @@ function parseArg(type, arg) {
     }
 }
 
-export function parse(code) {
+export default function parse(code) {
     const program = [];
     const labels = {};
     const unresolvedJumps = [];
@@ -72,7 +72,7 @@ export function parse(code) {
                 program.push({ op: "nop" });
                 continue;
             } else {
-                program.push({ op: "err", msg: "Label already defined" });
+                program.push({ op: "err", msg: `Метка уже объявлена в строке ${labels[label]}` });
                 continue;
             }
         }
@@ -83,7 +83,7 @@ export function parse(code) {
         const cmd = line.match(/^[a-z]+/)[0];
         const info = commands[cmd];
         if (!info) {
-            program.push({ op: "err", msg: "Command not found" });
+            program.push({ op: "err", msg: "Неизвестная команда" });
             continue;
         }
         let op;
@@ -110,7 +110,7 @@ export function parse(code) {
                 unresolvedJumps.push({ i: program.length, labelArgs });
             program.push({ op, args: parsedArgs });
         } else
-            program.push({ op: "err", msg: "Wrong arguments" });
+            program.push({ op: "err", msg: "Неверные аргументы" });
     }
     for (const { i, labelArgs } of unresolvedJumps) {
         const { args } = program[i];
@@ -119,7 +119,7 @@ export function parse(code) {
             if (labels[arg])
                 args[j] = labels[arg];
             else {
-                program[i] = { op: "err", msg: "Unresolved label" };
+                program[i] = { op: "err", msg: "Неизвестная метка" };
                 break;
             }
         }

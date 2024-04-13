@@ -1,0 +1,33 @@
+.editor {
+    display: flex;
+    background-color: #ddd;
+    overflow: auto;
+}
+
+.editor-lines {
+    min-width: 28px;
+    padding: 2px;
+    text-align: right;
+    user-select: none;
+}
+
+.editor-line {
+    display: block;
+    padding-right: 6px;
+}
+
+.editor-textarea {
+    outline: none;
+    background: transparent;
+    resize: none;
+    border: none;
+    text-wrap: nowrap;
+    flex: auto;
+    overflow-y: hidden;
+    box-sizing: border-box;
+}
+
+.editor-lines, .editor-textarea {
+    font-size: 20px;
+    font-family: sans-serif;
+}

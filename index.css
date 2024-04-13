@@ -1,3 +1,5 @@
+@import url(editor.css);
+
 @font-face {
     font-family: Digital-7;
     src: url(digital-7.ttf);
@@ -5,6 +7,67 @@
 
 body {
     margin: 0;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    width: 40px;
+    padding: 8px;
+    text-align: center;
+}
+
+td:first-child {
+    border-right: 2px solid #ccc;
+}
+
+tr:not(:last-child) > td {
+    border-bottom: 2px solid #ccc;
+}
+
+[contenteditable] {
+    outline: none;
+}
+
+#editor {
+    width: 60vw;
+    height: 100vh;
+}
+
+.line-breakpoint {
+    background-color: #f44;
+    color: #fff;
+}
+
+.line-breakpoint.breakpoint-current {
+    background-color: #44f;
+}
+
+.line-error {
+    color: #f44;
+}
+
+.line-breakpoint.line-error {
+    background-color: #da4;
+}
+
+#debug-info {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    text-align: center;
+}
+
+#reg-table {
+    font-size: 24px;
+    margin: 16px;
+    font-family: sans-serif;
+}
+
+#resume-button {
+    font-size: 16px;
 }
 
 #calculator {

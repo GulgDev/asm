@@ -1,10 +1,18 @@
 import { REG } from "./const.js";
-import { parse } from "./parser.js";
+import parse from "./parser.js";
 
-export class Emulator {
+export default class Emulator {
     pos = 0;
     reg = Object.fromEntries(Object.values(REG).map((reg) => [reg, 0]));
     flags = { zero: false, sign: false };
+    breakpoints = new Set();
+    isRunning = false;
+
+    constructor(onError, onBreakpoint, onDone) {
+        this.onError = onError;
+        this.onBreakpoint = onBreakpoint;
+        this.onDone = onDone;
+    }
 
     mov_RR(reg1, reg2) {
         this.reg[reg1] = this.reg[reg2];
@@ -89,20 +97,43 @@ export class Emulator {
     exec(code) {
         this.reg[REG.IP] = 0;
 
-        const program = parse(code);
-        const programSize = program.length;
+        this.program = parse(code);
 
-        const errors = program.map((cmd, i) => ({ ...cmd, line: i + 1 })).filter(({ op }) => op === "err");
+        const errors = this.program.map((cmd, i) => ({ ...cmd, line: i + 1 })).filter(({ op }) => op === "err");
         if (errors.length > 0) {
             for (const error of errors)
-                alert(`Error at line ${error.line}: ${error.msg}`);
+                this.onError?.(error.msg, error.line);
             return;
         }
 
-        while (this.reg[REG.IP] < programSize) {
-            const { op, args } = program[this.reg[REG.IP]++];
+        this.skipBreakpoint = false;
+        this.resume();
+    }
+
+    toggleBreakpoint(i) {
+        if (this.breakpoints.has(i))
+            this.breakpoints.delete(i);
+        else
+            this.breakpoints.add(i);
+    }
+
+    resume() {
+        this.isRunning = true;
+        const programSize = this.program.length;
+        let i;
+        while ((i = this.reg[REG.IP]) < programSize) {
+            if (!this.skipBreakpoint && this.breakpoints.has(++i)) {
+                this.skipBreakpoint = true;
+                this.onBreakpoint?.(i);
+                this.isRunning = false;
+                return;
+            }
+            this.skipBreakpoint = false;
+            const { op, args } = this.program[this.reg[REG.IP]++];
             if (op !== "nop" && op !== "err")
                 this[op].apply(this, args);
         }
+        this.onDone?.();
+        this.isRunning = false;
     }
 }
