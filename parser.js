@@ -19,6 +19,14 @@ const commands = {
         sub_RR: [ARG.REG, ARG.REG],
         sub_RV: [ARG.REG, ARG.VAL]
     },
+    shl: {
+        shl_RR: [ARG.REG, ARG.REG],
+        shl_RV: [ARG.REG, ARG.VAL]
+    },
+    shr: {
+        shr_RR: [ARG.REG, ARG.REG],
+        shr_RV: [ARG.REG, ARG.VAL]
+    },
     jmp: {
         jmp: [ARG.LBL]
     },

@@ -34,6 +34,26 @@ export class Emulator {
         this.updateFlags(reg);
     }
 
+    shl_RR(reg1, reg2) {
+        this.reg[reg1] <<= this.reg[reg2];
+        this.updateFlags(reg1);
+    }
+
+    shl_RV(reg, val) {
+        this.reg[reg] <<= val;
+        this.updateFlags(reg);
+    }
+
+    shr_RR(reg1, reg2) {
+        this.reg[reg1] >>= this.reg[reg2];
+        this.updateFlags(reg1);
+    }
+
+    shr_RV(reg, val) {
+        this.reg[reg] >>= val;
+        this.updateFlags(reg);
+    }
+
     jmp(pos) {
         this.mov_RV(REG.IP, pos);
     }
