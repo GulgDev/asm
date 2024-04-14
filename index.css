@@ -7,6 +7,7 @@
 
 body {
     margin: 0;
+    font-family: sans-serif;
 }
 
 table {
@@ -31,7 +32,82 @@ tr:not(:last-child) > td {
     outline: none;
 }
 
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+}
+
+#sidebar {
+    z-index: 2;
+    position: absolute;
+    left: -352px;
+    width: 400px;
+    height: 100vh;
+    box-sizing: border-box;
+    transition: left .75s;
+    background-color: #e2e2e2;
+}
+
+#sidebar-toggle-button {
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 40px;
+    height: 40px;
+    background-image: url(arrow.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    transition: transform .75s;
+}
+
+#sidebar-logo {
+    display: block;
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 40px;
+    height: 40px;
+    background-image: url(icon.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#sidebar.open {
+    left: 0;
+}
+
+#sidebar.open #sidebar-toggle-button {
+    transform: rotateY(180deg);
+}
+
+#test-button {
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 52px;
+    width: 40px;
+    height: 40px;
+    background-image: url(run.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+
+#stage-descriptions {
+    margin: 48px;
+    margin-left: 16px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    overflow-y: auto;
+    max-height: calc(100% - 64px);
+}
+
 #editor {
+    position: absolute;
+    left: 48px;
     width: 60vw;
     height: 100vh;
 }
@@ -54,7 +130,7 @@ tr:not(:last-child) > td {
 }
 
 #debug-info {
-    position: fixed;
+    position: absolute;
     bottom: 20px;
     right: 20px;
     text-align: center;
@@ -63,7 +139,6 @@ tr:not(:last-child) > td {
 #reg-table {
     font-size: 24px;
     margin: 16px;
-    font-family: sans-serif;
 }
 
 #resume-button {
@@ -71,7 +146,7 @@ tr:not(:last-child) > td {
 }
 
 #calculator {
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 20px;
     display: flex;
@@ -140,4 +215,9 @@ tr:not(:last-child) > td {
 .calculator-button-special {
     background-color: #d84;
     color: white;
+}
+
+.calculator-button-disabled {
+    pointer-events: none;
+    filter: grayscale(.8) brightness(1.2);
 }

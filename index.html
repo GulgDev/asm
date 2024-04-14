@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>ASM</title>
+        <link rel="icon" href="icon.png">
         <link rel="stylesheet" href="index.css">
         <script type="module" src="index.js"></script>
     </head>
     <body>
+        <div id="sidebar">
+            <span id="sidebar-toggle-button" onclick="this.parentElement.classList.toggle('open')"></span>
+            <span id="sidebar-logo"></span>
+            <span id="test-button" onclick="test()"></span>
+            <div id="stage-descriptions"></div>
+        </div>
         <div id="editor"></div>
         <div id="debug-info">
             <table id="reg-table"></table>
@@ -15,44 +23,44 @@
             <div id="calculator-buttons">
                 <div class="calculator-buttons-row">
                     <div>
-                        <span class="calculator-button" onclick="device.input(1)">1</span>
-                        <span class="calculator-button" onclick="device.input(2)">2</span>
-                        <span class="calculator-button" onclick="device.input(3)">3</span>
+                        <span class="calculator-button" data-keycode="1">1</span>
+                        <span class="calculator-button" data-keycode="2">2</span>
+                        <span class="calculator-button" data-keycode="3">3</span>
                     </div>
                     <div>
-                        <span class="calculator-button calculator-button-special" onclick="device.input(15)">C</span>
+                        <span class="calculator-button calculator-button-special" data-keycode="15">C</span>
                         <span class="calculator-button calculator-button-special" onclick="device.reset()">AC</span>
                     </div>
                 </div>
                 <div class="calculator-buttons-row">
                     <div>
-                        <span class="calculator-button" onclick="device.input(4)">4</span>
-                        <span class="calculator-button" onclick="device.input(5)">5</span>
-                        <span class="calculator-button" onclick="device.input(6)">6</span>
+                        <span class="calculator-button" data-keycode="4">4</span>
+                        <span class="calculator-button" data-keycode="5">5</span>
+                        <span class="calculator-button" data-keycode="6">6</span>
                     </div>
                     <div>
-                        <span class="calculator-button calculator-button-special" onclick="device.input(11)">+</span>
-                        <span class="calculator-button calculator-button-special" onclick="device.input(12)">-</span>
+                        <span class="calculator-button calculator-button-special" data-keycode="11">+</span>
+                        <span class="calculator-button calculator-button-special" data-keycode="12">-</span>
                     </div>
                 </div>
                 <div class="calculator-buttons-row">
                     <div>
-                        <span class="calculator-button" onclick="device.input(7)">7</span>
-                        <span class="calculator-button" onclick="device.input(8)">8</span>
-                        <span class="calculator-button" onclick="device.input(9)">9</span>
+                        <span class="calculator-button" data-keycode="7">7</span>
+                        <span class="calculator-button" data-keycode="8">8</span>
+                        <span class="calculator-button" data-keycode="9">9</span>
                     </div>
                     <div>
-                        <span class="calculator-button calculator-button-special" onclick="device.input(13)">*</span>
-                        <span class="calculator-button calculator-button-special" onclick="device.input(14)">/</span>
+                        <span class="calculator-button calculator-button-special" data-keycode="13">*</span>
+                        <span class="calculator-button calculator-button-special" data-keycode="14">/</span>
                     </div>
                 </div>
                 <div class="calculator-buttons-row">
                     <div>
                         <span class="calculator-placeholder"></span>
-                        <span class="calculator-button" onclick="device.input(0)">0</span>
+                        <span class="calculator-button" data-keycode="0">0</span>
                     </div>
                     <div>
-                        <span class="calculator-button calculator-button-special" onclick="device.input(10)">=</span>
+                        <span class="calculator-button calculator-button-special" data-keycode="10">=</span>
                     </div>
                 </div>
             </div>
