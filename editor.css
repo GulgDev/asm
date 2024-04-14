@@ -30,5 +30,5 @@
 
 .editor-lines, .editor-textarea {
     font-size: 20px;
-    font-family: sans-serif;
+    font-family: inherit;
 }

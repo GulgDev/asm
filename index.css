@@ -103,6 +103,12 @@ tr:not(:last-child) > td {
     font-size: 18px;
     overflow-y: auto;
     max-height: calc(100% - 64px);
+    text-wrap: pretty;
+    font-family: inherit;
+}
+
+#stage-descriptions > span > * {
+    white-space: normal;
 }
 
 #editor {

@@ -80,7 +80,7 @@ export default function parse(code) {
             program.push({ op: "nop" });
             continue;
         }
-        const cmd = line.match(/^[a-z]+/)[0];
+        const cmd = line.match(/^[a-z]+/)?.[0];
         const info = commands[cmd];
         if (!info) {
             program.push({ op: "err", msg: "Неизвестная команда" });
