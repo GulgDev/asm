@@ -17,7 +17,6 @@ class Calculator {
     input(keyCode) {
         this.emulator.mov_RV(REG.IN, keyCode);
         this.emulator.exec(this.editor.value);
-        this.update();
     }
 
     update() {
@@ -81,6 +80,7 @@ const emulator = new Emulator(
     },
     () => {
         updateRegTable();
+        device.update();
     }
 );
 const editor = new Editor(document.getElementById("editor"),

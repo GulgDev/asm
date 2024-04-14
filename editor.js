@@ -1,3 +1,5 @@
+const INDENT = "    ";
+
 export default class Editor {
     constructor(container, onChange, onLineClick) {
         this.container = container;
@@ -7,6 +9,29 @@ export default class Editor {
         container.appendChild(this.linesContainer);
         this.textarea = document.createElement("textarea");
         this.textarea.className = "editor-textarea";
+        this.textarea.addEventListener("keydown", (e) => {
+            if (e.code === "Tab") {
+                e.preventDefault();
+                const dir = this.textarea.selectionDirection;
+                const selectionStart = this.textarea.selectionStart;
+                let start = this.textarea.selectionStart - 1;
+                while (start > 0 && this.textarea.value[start] !== "\n")
+                    --start;
+                if (this.textarea.value[start] === "\n")
+                    ++start;
+                const end = this.textarea.selectionEnd;
+                const str = this.textarea.value.slice(start, end);
+                if (e.shiftKey) {
+                    const replacement = str.replace(/^ {1,4}/, "").replace(/\n {1,4}/g, "\n");
+                    this.replace(start, end, replacement);
+                    this.textarea.selectionStart = selectionStart - str.match(/^ {0,4}/)[0].length;
+                } else {
+                    this.replace(start, end, INDENT + str.replace(/\n/g, "\n" + INDENT));
+                    this.textarea.selectionStart = selectionStart + 4;
+                }
+                this.textarea.selectionDirection = dir;
+            }
+        });
         this.textarea.addEventListener("input", onChange);
         container.appendChild(this.textarea);
 
@@ -18,6 +43,17 @@ export default class Editor {
 
     get value() {
         return this.textarea.value;
+    }
+
+    set value(value) {
+        this.textarea.value = value;
+        this.render();
+    }
+
+    replace(start, end, value) {
+        this.textarea.selectionStart = start;
+        this.textarea.selectionEnd = end;
+        document.execCommand("insertText", false, value);
     }
 
     render() {
