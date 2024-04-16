@@ -33,16 +33,17 @@ export default class Editor extends EventTarget {
                 this.textarea.selectionDirection = dir;
             } else if (e.code === "Enter") {
                 e.preventDefault();
-                let start = this.textarea.selectionDirection === "forward" ? this.textarea.selectionStart : this.textarea.selectionEnd;
+                let start = this.textarea.selectionStart - 1;
                 while (start > 0 && this.textarea.value[start] !== "\n")
                     --start;
                 if (this.textarea.value[start] === "\n")
                     ++start;
-                const end = this.textarea.selectionDirection === "forward" ? this.textarea.selectionEnd : this.textarea.selectionStart;
-                if (this.textarea.value.slice(start, start + 4) === INDENT && (end === this.textarea.value.length || this.textarea.value[end] === "\n"))
-                    this.replace(end, end, "\n" + INDENT);
+                const end = this.textarea.selectionEnd;
+                console.log(JSON.stringify(this.textarea.value.slice(start).match(/^(    )*/)[0]), JSON.stringify(this.textarea.value.slice(start)));
+                if (end === this.textarea.value.length || this.textarea.value[end] === "\n")
+                    this.insert("\n" + this.textarea.value.slice(start).match(/^(    )*/)[0]);
                 else
-                    this.replace(end, end, "\n");
+                    this.insert("\n");
             }
         });
         container.appendChild(this.textarea);
@@ -66,6 +67,10 @@ export default class Editor extends EventTarget {
     replace(start, end, value) {
         this.textarea.selectionStart = start;
         this.textarea.selectionEnd = end;
+        this.insert(value);
+    }
+
+    insert(value) {
         document.execCommand("insertText", false, value);
         this.render();
     }

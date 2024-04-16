@@ -63,7 +63,6 @@ code {
 .image {
     width: 40px;
     height: 40px;
-    background-image: url(arrow.svg);
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -73,6 +72,7 @@ code {
     position: absolute;
     top: 4px;
     right: 4px;
+    background-image: url(arrow.svg);
     cursor: pointer;
     transition: transform .75s;
 }
@@ -82,6 +82,7 @@ code {
     position: absolute;
     bottom: 4px;
     right: 4px;
+    background-image: url(icon.png);
 }
 
 #sidebar.open {
@@ -97,8 +98,7 @@ code {
     position: absolute;
     top: 4px;
     right: 52px;
-    width: 40px;
-    height: 40px;
+    background-image: url(run.svg);
     cursor: pointer;
 }
 
