@@ -1,18 +1,12 @@
 import { REG } from "./const.js";
 import parse from "./parser.js";
 
-export default class Emulator {
+export default class Emulator extends EventTarget {
     pos = 0;
     reg = Object.fromEntries(Object.values(REG).map((reg) => [reg, 0]));
     flags = { zero: false, sign: false };
     breakpoints = new Set();
     isRunning = false;
-
-    constructor(onError, onBreakpoint, onDone) {
-        this.onError = onError;
-        this.onBreakpoint = onBreakpoint;
-        this.onDone = onDone;
-    }
 
     mov_RR(reg1, reg2) {
         this.reg[reg1] = this.reg[reg2];
@@ -99,10 +93,10 @@ export default class Emulator {
 
         this.program = parse(code);
 
-        const errors = this.program.map((cmd, i) => ({ ...cmd, line: i + 1 })).filter(({ op }) => op === "err");
+        const errors = this.program.map((cmd, i) => ({ msg: cmd.msg, lineno: i + 1 })).filter(({ op }) => op === "err");
         if (errors.length > 0) {
             for (const error of errors)
-                this.onError?.(error.msg, error.line);
+                this.dispatchEvent(new CustomEvent("error", error));
             return;
         }
 
@@ -124,7 +118,7 @@ export default class Emulator {
         while ((i = this.reg[REG.IP]) < programSize) {
             if (!this.skipBreakpoint && this.breakpoints.has(++i)) {
                 this.skipBreakpoint = true;
-                this.onBreakpoint?.(i);
+                this.dispatchEvent(new CustomEvent("breakpoint", { lineno }));
                 this.isRunning = false;
                 return;
             }
@@ -133,7 +127,16 @@ export default class Emulator {
             if (op !== "nop" && op !== "err")
                 this[op].apply(this, args);
         }
-        this.onDone?.();
+        this.dispatchEvent(new Event("done"));
         this.isRunning = false;
+    }
+
+    finish() {
+        return new Promise((resolve) => {
+            if (this.isRunning)
+                this.addEventListener("done", resolve, { once: true });
+            else
+                resolve();
+        });
     }
 }

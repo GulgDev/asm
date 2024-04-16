@@ -8,9 +8,10 @@
     </head>
     <body>
         <div id="sidebar">
-            <span id="sidebar-toggle-button" onclick="this.parentElement.classList.toggle('open')"></span>
-            <span id="sidebar-logo"></span>
-            <span id="test-button" onclick="test()"></span>
+            <span id="sidebar-toggle-button" class="image" onclick="this.parentElement.classList.toggle('open')"></span>
+            <span id="sidebar-logo" class="image"></span>
+            <span id="test-button" class="image" onclick="test()"></span>
+            <span id="skip-tutorial" onclick="skipTutorial()">Пропустить обучение</span>
             <pre id="stage-descriptions"></pre>
         </div>
         <div id="editor"></div>

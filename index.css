@@ -12,6 +12,7 @@ body {
 
 table {
     border-collapse: collapse;
+    margin: 8px auto;
 }
 
 td {
@@ -26,6 +27,16 @@ td:first-child {
 
 tr:not(:last-child) > td {
     border-bottom: 2px solid #ccc;
+}
+
+code {
+    display: block;
+    white-space: pre !important;
+    width: fit-content;
+    background-color: #eee;
+    border-radius: 4px;
+    padding: 4px;
+    margin: 8px 0;
 }
 
 [contenteditable] {
@@ -49,16 +60,19 @@ tr:not(:last-child) > td {
     background-color: #e2e2e2;
 }
 
-#sidebar-toggle-button {
-    display: block;
-    position: absolute;
-    top: 4px;
-    right: 4px;
+.image {
     width: 40px;
     height: 40px;
     background-image: url(arrow.svg);
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+#sidebar-toggle-button {
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 4px;
     cursor: pointer;
     transition: transform .75s;
 }
@@ -68,11 +82,6 @@ tr:not(:last-child) > td {
     position: absolute;
     bottom: 4px;
     right: 4px;
-    width: 40px;
-    height: 40px;
-    background-image: url(icon.png);
-    background-repeat: no-repeat;
-    background-size: contain;
 }
 
 #sidebar.open {
@@ -90,9 +99,14 @@ tr:not(:last-child) > td {
     right: 52px;
     width: 40px;
     height: 40px;
-    background-image: url(run.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
+    cursor: pointer;
+}
+
+#skip-tutorial {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    text-decoration: underline;
     cursor: pointer;
 }
 

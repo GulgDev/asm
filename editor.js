@@ -1,7 +1,8 @@
 const INDENT = "    ";
 
-export default class Editor {
-    constructor(container, onChange, onLineClick) {
+export default class Editor extends EventTarget {
+    constructor(container) {
+        super();
         this.container = container;
         container.classList.add("editor");
         this.linesContainer = document.createElement("div");
@@ -24,20 +25,32 @@ export default class Editor {
                 if (e.shiftKey) {
                     const replacement = str.replace(/^ {1,4}/, "").replace(/\n {1,4}/g, "\n");
                     this.replace(start, end, replacement);
-                    this.textarea.selectionStart = selectionStart - str.match(/^ {0,4}/)[0].length;
+                    this.textarea.selectionStart = selectionStart - str.match(/^ {0,4}/)[0].length; // @TODO: Fix
                 } else {
                     this.replace(start, end, INDENT + str.replace(/\n/g, "\n" + INDENT));
                     this.textarea.selectionStart = selectionStart + 4;
                 }
                 this.textarea.selectionDirection = dir;
+            } else if (e.code === "Enter") {
+                e.preventDefault();
+                let start = this.textarea.selectionDirection === "forward" ? this.textarea.selectionStart : this.textarea.selectionEnd;
+                while (start > 0 && this.textarea.value[start] !== "\n")
+                    --start;
+                if (this.textarea.value[start] === "\n")
+                    ++start;
+                const end = this.textarea.selectionDirection === "forward" ? this.textarea.selectionEnd : this.textarea.selectionStart;
+                if (this.textarea.value.slice(start, start + 4) === INDENT && (end === this.textarea.value.length || this.textarea.value[end] === "\n"))
+                    this.replace(end, end, "\n" + INDENT);
+                else
+                    this.replace(end, end, "\n");
             }
         });
-        this.textarea.addEventListener("input", onChange);
         container.appendChild(this.textarea);
 
-        this.onLineClick = onLineClick;
-
-        this.textarea.addEventListener("input", () => this.render());
+        this.textarea.addEventListener("input", () => {
+            this.render();
+            this.dispatchEvent(new Event("change"));
+        });
         this.render();
     }
 
@@ -54,6 +67,7 @@ export default class Editor {
         this.textarea.selectionStart = start;
         this.textarea.selectionEnd = end;
         document.execCommand("insertText", false, value);
+        this.render();
     }
 
     render() {
@@ -62,7 +76,7 @@ export default class Editor {
             const line = document.createElement("span");
             line.className = "editor-line";
             line.innerText = i;
-            line.addEventListener("click", () => this.onLineClick?.(line, i));
+            line.addEventListener("click", () => this.dispatchEvent(new CustomEvent("lineclick", { line, lineno })));
             this.linesContainer.appendChild(line);
         }
         while (this.linesContainer.childElementCount > lineCount)
