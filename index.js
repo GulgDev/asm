@@ -293,7 +293,7 @@ function updateStage() {
     title.innerText = info.title;
     stageDescriptions.prepend(title);
     document.querySelectorAll("[data-keycode]").forEach((button) => {
-        if (currentStage === lastStage || stages[i].buttons?.has(Number.parseInt(button.getAttribute("data-keycode"))))
+        if (currentStage === lastStage || stages[currentStage].buttons?.includes(Number.parseInt(button.getAttribute("data-keycode"))))
             button.classList.remove("calculator-button-disabled");
     });
 }
@@ -302,7 +302,7 @@ const savedStage = Number.parseInt(localStorage.getItem("currentStage"));
 let currentStage = -1;
 
 while (currentStage < savedStage) {
-    ++i;
+    ++currentStage;
     updateStage();
 }
 
