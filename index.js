@@ -101,6 +101,7 @@ editor.addEventListener("lineclick", ({ line, lineno }) => {
 
 document.querySelectorAll("[data-keycode]").forEach((button) => {
     button.addEventListener("click", () => device.input(button.getAttribute("data-keycode")));
+    button.classList.add("calculator-button-disabled");
 });
 
 resumeButton.addEventListener("click", () => {
@@ -284,9 +285,6 @@ const lastStage = stages.length - 1;
 
 function updateStage() {
     localStorage.setItem("currentStage", currentStage);
-    const enabledButtons = new Set();
-    for (let i = 0; i <= currentStage; ++i)
-        stages[i].buttons?.forEach((button) => enabledButtons.add(button));
     const info = stages[currentStage];
     const description = document.createElement("span");
     description.innerHTML = info.description.trim();
@@ -295,16 +293,18 @@ function updateStage() {
     title.innerText = info.title;
     stageDescriptions.prepend(title);
     document.querySelectorAll("[data-keycode]").forEach((button) => {
-        if (currentStage === lastStage || enabledButtons.has(Number.parseInt(button.getAttribute("data-keycode"))))
+        if (currentStage === lastStage || stages[i].buttons?.has(Number.parseInt(button.getAttribute("data-keycode"))))
             button.classList.remove("calculator-button-disabled");
-        else
-            button.classList.add("calculator-button-disabled");
     });
 }
 
-let currentStage = Number.parseInt(localStorage.getItem("currentStage") ?? 0);
+const savedStage = Number.parseInt(localStorage.getItem("currentStage"));
+let currentStage = -1;
 
-updateStage();
+while (currentStage < savedStage) {
+    ++i;
+    updateStage();
+}
 
 window.test = async () => {
     if (emulator.isRunning || currentStage === lastStage)
