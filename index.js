@@ -68,6 +68,11 @@ function clearErrors() {
         error.classList.remove("line-error");
 }
 
+window.reset = () => {
+    device.reset();
+    updateRegTable();
+};
+
 const emulator = new Emulator();
 emulator.addEventListener("error", ({ msg, lineno }) => {
     const line = editor.getLine(lineno);

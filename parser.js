@@ -27,6 +27,14 @@ const commands = {
         shr_RR: [ARG.REG, ARG.REG],
         shr_RV: [ARG.REG, ARG.VAL]
     },
+    or: {
+        or_RR: [ARG.REG, ARG.REG],
+        or_RV: [ARG.REG, ARG.VAL]
+    },
+    and: {
+        and_RR: [ARG.REG, ARG.REG],
+        and_RV: [ARG.REG, ARG.VAL]
+    },
     jmp: {
         jmp: [ARG.LBL]
     },

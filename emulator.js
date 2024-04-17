@@ -56,6 +56,26 @@ export default class Emulator extends EventTarget {
         this.updateFlags(reg);
     }
 
+    or_RR(reg1, reg2) {
+        this.reg[reg1] |= this.reg[reg2];
+        this.updateFlags(reg1);
+    }
+
+    or_RV(reg, val) {
+        this.reg[reg] |= val;
+        this.updateFlags(reg);
+    }
+
+    and_RR(reg1, reg2) {
+        this.reg[reg1] &= this.reg[reg2];
+        this.updateFlags(reg1);
+    }
+
+    and_RV(reg, val) {
+        this.reg[reg] &= val;
+        this.updateFlags(reg);
+    }
+
     jmp(pos) {
         this.mov_RV(REG.IP, pos);
     }

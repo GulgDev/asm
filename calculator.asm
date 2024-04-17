@@ -1,18 +1,21 @@
 mov a, in
 sub a, 10
 jlz digit
-sub a, 1
-jlz result
-sub a, 1
-jlz add
-sub a, 1
-jlz sub
-sub a, 1
-jlz mul
-sub a, 1
-jlz div
-sub a, 1
+jz result
+sub a, 4
 jz clear
+
+mov c, d
+shr c, 3
+mov a, d
+and a, 7
+jz add
+sub a, 1
+jz sub
+sub a, 1
+jz mul
+sub a, 1
+jz div
 jmp exit
 
 .digit
@@ -57,6 +60,7 @@ jmp exit
     jmp exit
 
 .add
+    add out, c
     jmp exit
 
 .sub
@@ -67,5 +71,12 @@ jmp exit
 
 .div
     jmp exit
+
+.end
+    mov d, out
+    shl d, 3
+    mov a, in
+    sub a, 11
+    or d, a
 
 .exit
