@@ -116,7 +116,7 @@ export default class Emulator extends EventTarget {
         const errors = this.program.map((cmd, i) => ({ msg: cmd.msg, lineno: i + 1 })).filter(({ op }) => op === "err");
         if (errors.length > 0) {
             for (const error of errors)
-                this.dispatchEvent(new CustomEvent("error", error));
+                this.dispatchEvent(new CustomEvent("error", { detail: error }));
             return;
         }
 
@@ -138,7 +138,7 @@ export default class Emulator extends EventTarget {
         while ((i = this.reg[REG.IP]) < programSize) {
             if (!this.skipBreakpoint && this.breakpoints.has(++i)) {
                 this.skipBreakpoint = true;
-                this.dispatchEvent(new CustomEvent("breakpoint", { lineno }));
+                this.dispatchEvent(new CustomEvent("breakpoint", { detail: i }));
                 this.isRunning = false;
                 return;
             }

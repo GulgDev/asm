@@ -39,7 +39,6 @@ export default class Editor extends EventTarget {
                 if (this.textarea.value[start] === "\n")
                     ++start;
                 const end = this.textarea.selectionEnd;
-                console.log(JSON.stringify(this.textarea.value.slice(start).match(/^(    )*/)[0]), JSON.stringify(this.textarea.value.slice(start)));
                 if (end === this.textarea.value.length || this.textarea.value[end] === "\n")
                     this.insert("\n" + this.textarea.value.slice(start).match(/^(    )*/)[0]);
                 else
@@ -81,7 +80,7 @@ export default class Editor extends EventTarget {
             const line = document.createElement("span");
             line.className = "editor-line";
             line.innerText = i;
-            line.addEventListener("click", () => this.dispatchEvent(new CustomEvent("lineclick", { line, lineno })));
+            line.addEventListener("click", () => this.dispatchEvent(new CustomEvent("lineclick", { detail: { line, lineno: i } })));
             this.linesContainer.appendChild(line);
         }
         while (this.linesContainer.childElementCount > lineCount)

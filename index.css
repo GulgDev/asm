@@ -116,8 +116,8 @@ code {
     margin-bottom: 16px;
     font-size: 18px;
     overflow-y: auto;
-    max-height: calc(100% - 64px);
-    text-wrap: pretty;
+    height: calc(100% - 64px);
+    white-space: pre-wrap;
     font-family: inherit;
 }
 
@@ -218,13 +218,13 @@ code {
 }
 
 .calculator-button {
-    display: inline-block;
+    display: flex;
     height: 60px;
     width: 50px;
     font-size: 40px;
     font-family: Digital-7;
-    text-align: center;
-    align-content: center;
+    justify-content: center;
+    align-items: center;
     background-color: #ddd;
     border-radius: 8px;
     user-select: none;

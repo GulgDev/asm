@@ -74,12 +74,12 @@ window.reset = () => {
 };
 
 const emulator = new Emulator();
-emulator.addEventListener("error", ({ msg, lineno }) => {
+emulator.addEventListener("error", ({ detail: { msg, lineno } }) => {
     const line = editor.getLine(lineno);
     line.classList.add("line-error");
     line.setAttribute("title", msg);
 });
-emulator.addEventListener("breakpoint", ({ lineno }) => {
+emulator.addEventListener("breakpoint", ({ detail: lineno }) => {
     updateRegTable();
     device.update();
     const line = editor.getLine(lineno);
@@ -94,7 +94,7 @@ emulator.addEventListener("done", () => {
 
 const editor = new Editor(document.getElementById("editor"));
 editor.addEventListener("change", clearErrors);
-editor.addEventListener("lineclick", ({ line, lineno }) => {
+editor.addEventListener("lineclick", ({ detail: { line, lineno } }) => {
     line.classList.toggle("line-breakpoint");
     emulator.toggleBreakpoint(lineno);
 });
@@ -298,7 +298,7 @@ function updateStage() {
     });
 }
 
-const savedStage = Number.parseInt(localStorage.getItem("currentStage"));
+const savedStage = Number.parseInt(localStorage.getItem("currentStage") ?? 0);
 let currentStage = -1;
 
 while (currentStage < savedStage) {
