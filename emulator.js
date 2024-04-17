@@ -3,7 +3,7 @@ import parse from "./parser.js";
 
 export default class Emulator extends EventTarget {
     pos = 0;
-    reg = Object.fromEntries(Object.values(REG).map((reg) => [reg, 0]));
+    reg = Object.fromEntries(Object.values(REG).map((reg) => [reg, 0n]));
     flags = { zero: false, sign: false };
     breakpoints = new Set();
     isRunning = false;
@@ -77,43 +77,48 @@ export default class Emulator extends EventTarget {
     }
 
     jmp(pos) {
-        this.mov_RV(REG.IP, pos);
+        this.ip = pos;
     }
 
     jz(pos) {
         if (this.flags.zero)
-            this.mov_RV(REG.IP, pos);
+            this.ip = pos;
     }
 
     jnz(pos) {
         if (!this.flags.zero)
-            this.mov_RV(REG.IP, pos);
+            this.ip = pos;
     }
 
     jlz(pos) {
         if (this.flags.sign)
-            this.mov_RV(REG.IP, pos);
+            this.ip = pos;
+    }
+
+    jgz(pos) {
+        if (!this.flags.sign && !this.flags.zero)
+            this.ip = pos;
     }
 
     updateFlags(reg) {
         const val = this.reg[reg];
-        this.flags.zero = val === 0;
-        this.flags.sign = val < 0;
+        this.flags.zero = val === 0n;
+        this.flags.sign = val < 0n;
     }
 
     reset() {
         for (const reg in this.reg)
-            this.reg[reg] = 0;
+            this.reg[reg] = 0n;
         for (const flag in this.flags)
             this.flags[flag] = false;
     }
 
     exec(code) {
-        this.reg[REG.IP] = 0;
+        this.ip = 0;
 
         this.program = parse(code);
 
-        const errors = this.program.map((cmd, i) => ({ msg: cmd.msg, lineno: i + 1 })).filter(({ op }) => op === "err");
+        const errors = this.program.map((cmd, i) => ({ ...cmd, lineno: i + 1 })).filter(({ op }) => op === "err");
         if (errors.length > 0) {
             for (const error of errors)
                 this.dispatchEvent(new CustomEvent("error", { detail: error }));
@@ -134,16 +139,15 @@ export default class Emulator extends EventTarget {
     resume() {
         this.isRunning = true;
         const programSize = this.program.length;
-        let i;
-        while ((i = this.reg[REG.IP]) < programSize) {
-            if (!this.skipBreakpoint && this.breakpoints.has(++i)) {
+        while (this.ip < programSize) {
+            const lineno = this.ip + 1;
+            if (!this.skipBreakpoint && this.breakpoints.has(lineno)) {
                 this.skipBreakpoint = true;
-                this.dispatchEvent(new CustomEvent("breakpoint", { detail: i }));
-                this.isRunning = false;
+                this.dispatchEvent(new CustomEvent("breakpoint", { detail: lineno }));
                 return;
             }
             this.skipBreakpoint = false;
-            const { op, args } = this.program[this.reg[REG.IP]++];
+            const { op, args } = this.program[this.ip++];
             if (op !== "nop" && op !== "err")
                 this[op].apply(this, args);
         }

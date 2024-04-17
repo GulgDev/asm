@@ -182,14 +182,15 @@ code {
 }
 
 #calculator-display {
-    display: block;
+    display: flex;
     width: 100%;
     height: 80px;
+    overflow: hidden;
     border-radius: 8px;
     background-color: white;
     font-family: Digital-7;
-    text-align: right;
-    align-content: center;
+    direction: rtl;
+    align-items: center;
     font-size: 60px;
     padding: 10px;
     box-sizing: border-box;

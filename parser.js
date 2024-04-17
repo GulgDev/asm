@@ -46,19 +46,20 @@ const commands = {
     },
     jlz: {
         jlz: [ARG.LBL]
+    },
+    jgz: {
+        jgz: [ARG.LBL]
     }
 };
 
-const LABEL_REGEX = /^[a-z_][a-z0-9_]*$/;
+const LABEL_REGEX = /^[a-z0-9_]+$/;
 
 function parseArg(type, arg) {
     switch (type) {
         case ARG.REG:
-            if (/^[abcd]|in|out$/.test(arg))
-                return REG[arg.toUpperCase()];
-            break;
+            return REG[arg.toUpperCase()];
         case ARG.VAL:
-            return /^-?[0-9]+$/.test(arg) ? Number.parseInt(arg) : parseArg(ARG.REG, arg);
+            return /^-?[0-9]+$/.test(arg) ? BigInt(arg) : parseArg(ARG.REG, arg);
         case ARG.LBL:
             if (LABEL_REGEX.test(arg))
                 return arg;
@@ -72,7 +73,7 @@ export default function parse(code) {
     const unresolvedJumps = [];
     const lines = code.split("\n");
     for (const lineNumber in lines) {
-        let line = lines[lineNumber].replace(/;.+$/, "").trim();
+        let line = lines[lineNumber].replace(/;.*$/, "").trim();
         if (line.startsWith(".")) {
             const label = line.slice(1);
             if (LABEL_REGEX.test(label) && !labels[label]) {

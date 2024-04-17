@@ -1,82 +1,57 @@
+; Обработка нажатой клавиши
 mov a, in
-sub a, 10
-jlz digit
-jz result
-sub a, 3
-jz clear
+sub a, 9
+; Если a < 0, то нажата цифра
+jgz eq
+shl out, 1
+mov a, out
+shl a, 2
+add out, a
+add out, in
+jmp exit
+; Если a = 0, то нажат знак "="
+.eq
+jz op
+sub a, 5
+jz key_15
+.op
+    ; Если a < 0, то нажат знак арифметической операции    
 
-mov c, d
-shr c, 3
-mov a, d
-and a, 7
-jz add
-sub a, 1
-jz sub
-sub a, 1
-jz mul
-sub a, 1
-jz div
-jmp end
-
-.digit
-    mov a, 9
-    mov b, out
-    .digit_loop
-        add out, b
-        sub a, 1
-        jnz digit_loop
-    add out, in
-    jmp exit
-
-.clear
-    mov a, out
-    shr a, 1
-    mov b, out
-    shr b, 2
-    add a, b
-    mov b, a
-    shr b, 4
-    add a, b
-    mov b, a
-    shr b, 8
-    add a, b
-    mov b, a
-    shr b, 16
-    add a, b
+    mov a, d ; Считать из регистра d операнд и операцию
     shr a, 3
-    mov b, 9
-    mov c, a
-    .clear_loop
-        add c, a
-        sub b, 1
-        jnz clear_loop
-    sub out, c
-    add out, 6
-    shr out, 4
+    mov b, d
+    and b, 7
+
+    ; Производим операцию
+    jnz sub
     add out, a
-    jmp exit
+    .sub
+        sub b, 1
+        jnz mul
+        ; ...
+    .mul
+        sub b, 1
+        jnz div
+        ; ...
+    .div
+        sub b, 1
+        jnz calculate_end
+        ; ...
+    .calculate_end
+    
+    mov a, in ; Если нажат знак "=", то выходим
+    sub a, 10
+    jz exit
 
-.result
-    jmp exit
-
-.add
-    add out, c
-    jmp end
-
-.sub
-    jmp end
-
-.mul
-    jmp end
-
-.div
-    jmp end
-
-.end
-    mov d, out
+    mov d, out ; Сохранить в регистр d операнд и операцию
     shl d, 3
-    mov a, in
-    sub a, 11
-    or d, a
+    sub in, 11
+    or d, in
+
+    mov out, 0 ; Очистить экран
+
+    jmp exit
+.key_15
+    ; Если a = 0, то нажата кнопка "C"
 
 .exit

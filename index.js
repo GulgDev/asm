@@ -19,7 +19,7 @@ class Calculator {
     input(keyCode) {
         if (emulator.isRunning)
             return;
-        this.emulator.mov_RV(REG.IN, Number.parseInt(keyCode));
+        this.emulator.mov_RV(REG.IN, BigInt(keyCode));
         this.emulator.exec(this.editor.value);
     }
 
@@ -32,8 +32,6 @@ const resumeButton = document.getElementById("resume-button");
 
 const regTBody = document.getElementById("reg-table").createTBody();
 for (const [name, reg] of Object.entries(REG)) {
-    if (reg === REG.IP)
-        continue;
     const row = regTBody.insertRow();
     row.insertCell().innerText = name;
     const valueCell = row.insertCell();
@@ -59,8 +57,7 @@ for (const [name, reg] of Object.entries(REG)) {
 
 function updateRegTable() {
     for (const [reg, val] of Object.entries(emulator.reg))
-        if (reg != REG.IP)
-            regTBody.rows.item(reg - 1).lastElementChild.innerText = val;
+        regTBody.rows.item(reg).lastElementChild.innerText = val;
 }
 
 function clearErrors() {
@@ -189,7 +186,7 @@ mov a, 123 ; Поместить 123 в регистр A
             for (let i = 0; i < 10; ++i) {
                 device.input(i);
                 await emulator.finish();
-                if (emulator.reg[REG.OUT] !== i)
+                if (emulator.reg[REG.OUT] !== BigInt(i))
                     return false;
             }
             return true;
@@ -235,7 +232,7 @@ jlz lbl ; Перейти, если результат меньше нуля
                 n += d;
                 device.input(d);
                 await emulator.finish();
-                if (emulator.reg[REG.OUT] !== n)
+                if (emulator.reg[REG.OUT] !== BigInt(n))
                     return false;
             }
             return true;
@@ -267,7 +264,7 @@ jlz lbl ; Перейти, если результат меньше нуля
                     await emulator.finish();
                 }
                 device.input(i === 2 ? 10 : 15);
-                if (emulator.reg[REG.OUT] !== sum)
+                if (emulator.reg[REG.OUT] !== BigInt(sum))
                     return false;
             }
             return true;

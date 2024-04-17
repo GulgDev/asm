@@ -10,6 +10,7 @@ export default class Editor extends EventTarget {
         container.appendChild(this.linesContainer);
         this.textarea = document.createElement("textarea");
         this.textarea.className = "editor-textarea";
+        this.textarea.spellcheck = false;
         this.textarea.addEventListener("keydown", (e) => {
             if (e.code === "Tab") {
                 e.preventDefault();
