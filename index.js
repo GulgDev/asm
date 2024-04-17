@@ -303,7 +303,6 @@ function updateStage() {
 }
 
 let currentStage = Number.parseInt(localStorage.getItem("currentStage") ?? 0);
-currentStage = 4;
 
 updateStage();
 
