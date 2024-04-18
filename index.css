@@ -183,13 +183,13 @@ code {
 
 #calculator-display {
     display: flex;
+    flex-direction: row-reverse;
     width: 100%;
     height: 80px;
     overflow: hidden;
     border-radius: 8px;
     background-color: white;
     font-family: Digital-7;
-    direction: rtl;
     align-items: center;
     font-size: 60px;
     padding: 10px;

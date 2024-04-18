@@ -84,8 +84,10 @@ export default class Editor extends EventTarget {
             line.addEventListener("click", () => this.dispatchEvent(new CustomEvent("lineclick", { detail: { line, lineno: i } })));
             this.linesContainer.appendChild(line);
         }
-        while (this.linesContainer.childElementCount > lineCount)
+        while (this.linesContainer.childElementCount > lineCount) {
             this.linesContainer.lastElementChild.remove();
+            this.dispatchEvent(new CustomEvent("lineremove", { detail: this.linesContainer.childElementCount }));
+        }
         this.textarea.style.height = this.linesContainer.scrollHeight + "px";
     }
 

@@ -6,3 +6,7 @@ export const REG = {
     IN: 4,
     OUT: 5
 };
+
+export const CONST = {
+    ERROR: -0xFFFFFFFFn
+};

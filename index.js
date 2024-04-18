@@ -1,4 +1,4 @@
-import { REG } from "./const.js";
+import { REG, CONST } from "./const.js";
 import Emulator from "./emulator.js";
 import Editor from "./editor.js";
 
@@ -6,14 +6,14 @@ class Calculator {
     constructor(emulator, editor) {
         this.emulator = emulator;
         this.editor = editor;
-        this.display = document.getElementById("calculator-display");
+        this.output = document.getElementById("calculator-output");
     }
 
     reset() {
         if (emulator.isRunning)
             return;
         this.emulator.reset();
-        this.display.innerText = 0;
+        this.output.innerText = 0;
     }
 
     input(keyCode) {
@@ -24,7 +24,13 @@ class Calculator {
     }
 
     update() {
-        this.display.innerText = this.emulator.reg[REG.OUT];
+        let output = this.emulator.reg[REG.OUT];
+        for (const [name, value] of Object.entries(CONST))
+            if (output === value) {
+                output = name;
+                break;
+            }
+        this.output.innerText = output;
     }
 }
 
@@ -94,6 +100,9 @@ editor.addEventListener("change", clearErrors);
 editor.addEventListener("lineclick", ({ detail: { line, lineno } }) => {
     line.classList.toggle("line-breakpoint");
     emulator.toggleBreakpoint(lineno);
+});
+editor.addEventListener("lineremove", ({ detail: lineno }) => {
+    emulator.removeBreakpoint(lineno);
 });
 
 document.querySelectorAll("[data-keycode]").forEach((button) => {
@@ -202,18 +211,26 @@ sub a, b ; Прибавить к регистру A значение регис�
 shl a, b ; Битовый сдвиг влево регистра A на количество бит, указанное в регистре B
 shr a, b ; Битовый сдвиг вправо регистра A на количество бит, указанное в регистре B
 
+; Побитовые операции
+or a, b ; Побитовое ИЛИ
+xor a, b ; Побитовое исключающее ИЛИ
+and a, b ; Побитовое И
+
 ; Вторым аргументом каждой из этих команд также может быть число:
-add d, 123
-sub a, 456
+add a, 741
+or b, 147
 </code>
 В зависимости от результатов последнего выполненного вычисления можно совершать переходы:
 <code>jmp lbl ; Безусловный переход
 jz lbl ; Перейти, если результат равен нулю
 jnz lbl ; Перейти, если результат не равен нулю
 jlz lbl ; Перейти, если результат меньше нуля
+jgz lbl ; Перейти, если результат больше нуля
 
 .lbl ; Метка, к которой будет осуществлён переход
 </code>
+<b>mov не обновляет флаги!</b> Чтобы обновить флаги без выполнения операции можно использовать команду tst:
+<code>tst a</code>
 <b>Задание</b>: Написать программу для ввода числа в калькулятор. При нажатии клавиши с цифрой, цифра должна вставляться в конец числа.
 <details>
     <summary>Подсказка</summary>

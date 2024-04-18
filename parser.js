@@ -1,4 +1,4 @@
-import { REG } from "./const.js";
+import { REG, CONST } from "./const.js";
 
 const ARG = {
     REG: 0,
@@ -31,9 +31,16 @@ const commands = {
         or_RR: [ARG.REG, ARG.REG],
         or_RV: [ARG.REG, ARG.VAL]
     },
+    xor: {
+        xor_RR: [ARG.REG, ARG.REG],
+        xor_RV: [ARG.REG, ARG.VAL]
+    },
     and: {
         and_RR: [ARG.REG, ARG.REG],
         and_RV: [ARG.REG, ARG.VAL]
+    },
+    tst: {
+        tst: [ARG.REG]
     },
     jmp: {
         jmp: [ARG.LBL]
@@ -71,6 +78,8 @@ export default function parse(code) {
     const program = [];
     const labels = {};
     const unresolvedJumps = [];
+    for (const [name, value] of Object.entries(CONST))
+        code = code.replace(new RegExp("\\b" + name + "\\b", "g"), value);
     const lines = code.split("\n");
     for (const lineNumber in lines) {
         let line = lines[lineNumber].replace(/;.*$/, "").trim();

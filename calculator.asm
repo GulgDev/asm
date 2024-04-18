@@ -21,7 +21,10 @@ jz op
 sub a, 6
 jz key_15
 op:
-    ; Если a < 0, то нажат знак арифметической операции    
+    ; Если a < 0, то нажат знак арифметической операции
+
+    ; Если число ещё не было введено, то нужно вставить минус
+
 
     mov a, d ; Считать из регистра d операнд и операцию
     shr a, 4
@@ -34,22 +37,58 @@ op:
     sub b, 1
     jnz sub
     add out, a ; Сложение
+    jmp calculate_end
     sub:
         sub b, 1
         jnz mul
         sub a, out ; Вычитание
         mov out, a
+        jmp calculate_end
     mul:
         sub b, 1
         jnz div
-        ; ...
+
+        ; Умножение
+        mov c, 1 ; Знак результата
+
+        tst out ; Проверяем out
+        jgz mul_negative_check_a
+        xor out, -1 ; Если out < 0, инвертируем знак результата и делаем out положительным
+        add out, 1
+        xor c, 1
+    mul_negative_check_a:
+        tst a ; Проверяем a
+        jgz mul_negative_check_end
+        xor a, -1 ; Если a < 0, инвертируем знак результата и делаем a положительным
+        add a, 1
+        xor c, 1
+    mul_negative_check_end:
+
+        mov b, out ; Последовательно перемножаем каждый бит
+        mov out, 0
+        mul_loop:
+            mov c, a
+            and c, 1
+            jz mul_bit_zero
+            add out, b
+        mul_bit_zero:
+            shl b, 1
+            shr a, 1
+            jgz mul_loop
+        
+        tst c ; Проверяем знак результата
+        jz calculate_end
+        xor out, -1 ; Инвертируем результат
+        add out, 1
+        jmp calculate_end
     div:
         sub b, 1
         jnz calculate_end
-        ; ...
+
+        ; Деление
     calculate_end:
 
-    mov d, 0 ; Сбросить сохранённую операцию
+    and d, 1 ; Сбросить сохранённую операцию (оставляем только знак ввода)
     
     mov a, in ; Если нажат знак "=", то выходим
     sub a, 10
