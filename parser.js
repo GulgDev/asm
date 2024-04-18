@@ -74,8 +74,8 @@ export default function parse(code) {
     const lines = code.split("\n");
     for (const lineNumber in lines) {
         let line = lines[lineNumber].replace(/;.*$/, "").trim();
-        if (line.startsWith(".")) {
-            const label = line.slice(1);
+        if (line.endsWith(":")) {
+            const label = line.slice(0, -1);
             if (LABEL_REGEX.test(label) && !labels[label]) {
                 labels[label] = lineNumber;
                 program.push({ op: "nop" });

@@ -8,7 +8,7 @@ and a, 1
 jz digit
 mov out, 0
 and d, -2
-.digit
+digit:
 shl out, 1
 mov a, out
 shl a, 2
@@ -16,11 +16,11 @@ add out, a
 add out, in
 jmp exit
 ; Если a = 0, то нажат знак "="
-.eq
+eq:
 jz op
 sub a, 6
 jz key_15
-.op
+op:
     ; Если a < 0, то нажат знак арифметической операции    
 
     mov a, d ; Считать из регистра d операнд и операцию
@@ -34,20 +34,20 @@ jz key_15
     sub b, 1
     jnz sub
     add out, a ; Сложение
-    .sub
+    sub:
         sub b, 1
         jnz mul
         sub a, out ; Вычитание
         mov out, a
-    .mul
+    mul:
         sub b, 1
         jnz div
         ; ...
-    .div
+    div:
         sub b, 1
         jnz calculate_end
         ; ...
-    .calculate_end
+    calculate_end:
 
     mov d, 0 ; Сбросить сохранённую операцию
     
@@ -63,7 +63,7 @@ jz key_15
     or d, 1
 
     jmp exit
-.key_15 ; Если нажата кнопка "C"
+key_15: ; Если нажата кнопка "C"
     mov a, out ; https://stackoverflow.com/a/2033226/16475499
     shr a, 1
     mov b, out
@@ -81,7 +81,7 @@ jz key_15
     shr a, 3
     mov b, 9
     mov c, a
-    .clear_loop
+    clear_loop:
         add c, a
         sub b, 1
         jnz clear_loop
@@ -90,4 +90,4 @@ jz key_15
     shr out, 4
     add out, a
 
-.exit
+exit:
