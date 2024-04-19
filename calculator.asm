@@ -3,17 +3,31 @@ mov a, in
 sub a, 9
 ; Если a < 0, то нажата цифра
 jgz eq
-mov a, d
-and a, 1
+mov a, d ; Проверить, был ли нажат знак арифметической операции
+and a, 2
 jz digit
-mov out, 0
-and d, -2
+mov out, 0 ; Если был, то начать ввод заново
+xor d, 2
 digit:
+mov b, out ; Умножить out на 10
 shl out, 1
 mov a, out
 shl a, 2
 add out, a
-add out, in
+tst b ; Проверяем, является ли ввод отрицательным
+jlz digit_sub
+add out, in ; Если нет, то прибавлем in
+jmp negate
+digit_sub:
+sub out, in ; Иначе вычитаем
+negate:
+tst b ; Если введена первая цифра, и до этого был нажат минус, то надо инвертировать ввод
+jnz exit
+mov a, d
+and a, 1
+jz exit
+xor out, -1
+add out, 1
 jmp exit
 ; Если a = 0, то нажат знак "="
 eq:
@@ -23,13 +37,24 @@ jz key_15
 op:
     ; Если a < 0, то нажат знак арифметической операции
 
-    ; Если число ещё не было введено, то нужно вставить минус
+    ; Если число ещё не было введено и был нажат знак "-", то нужно вставить минус
+    mov a, d
+    and a, 2
+    jnz minus_check
+    tst out
+    jnz calculate
+    minus_check:
+    mov a, in
+    sub a, 12
+    jnz calculate
+    or d, 1
+    jmp exit
 
-
+    calculate:
     mov a, d ; Считать из регистра d операнд и операцию
-    shr a, 4
+    shr a, 5
     mov b, d
-    shr b, 1
+    shr b, 2
     and b, 7
 
     ; Производим операцию
@@ -82,24 +107,47 @@ op:
         add out, 1
         jmp calculate_end
     div:
-        sub b, 1
-        jnz calculate_end
-
         ; Деление
+        mov c, 1 ; Знак результата
+
+        tst out ; Проверяем out
+        jgz div_negative_check_a
+        xor out, -1 ; Если out < 0, инвертируем знак результата и делаем out положительным
+        add out, 1
+        xor c, 1
+    div_negative_check_a:
+        tst a ; Проверяем a
+        jgz div_negative_check_end
+        xor a, -1 ; Если a < 0, инвертируем знак результата и делаем a положительным
+        add a, 1
+        xor c, 1
+    div_negative_check_end:
+
+        mov b, out ; Последовательно перемножаем каждый бит
+        mov c, 0
+        div_loop:
+            mov c, a
+            and c, 1
+            jz div_bit_zero
+            add out, b
+        div_bit_zero:
+            shl b, 1
+            shr a, 1
+            jgz div_loop
+        
+        tst c ; Проверяем знак результата
+        jz calculate_end
+        xor out, -1 ; Инвертируем результат
+        add out, 1
+
     calculate_end:
 
-    and d, 1 ; Сбросить сохранённую операцию (оставляем только знак ввода)
-    
-    mov a, in ; Если нажат знак "=", то выходим
-    sub a, 10
-    jz exit
-
     mov d, out ; Сохранить в регистр d операнд и операцию
-    shl d, 4
+    shl d, 5
     sub in, 10
-    shl in, 1
+    shl in, 2
     or d, in
-    or d, 1
+    or d, 2
 
     jmp exit
 key_15: ; Если нажата кнопка "C"

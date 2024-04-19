@@ -79,7 +79,6 @@ export default class Editor extends EventTarget {
         const lineCount = this.value.split("\n").length;
         for (let i = this.linesContainer.childElementCount + 1; i <= lineCount; ++i) {
             const line = document.createElement("span");
-            line.className = "editor-line";
             line.innerText = i;
             line.addEventListener("click", () => this.dispatchEvent(new CustomEvent("lineclick", { detail: { line, lineno: i } })));
             this.linesContainer.appendChild(line);
@@ -88,6 +87,7 @@ export default class Editor extends EventTarget {
             this.linesContainer.lastElementChild.remove();
             this.dispatchEvent(new CustomEvent("lineremove", { detail: this.linesContainer.childElementCount }));
         }
+        this.textarea.style.width = Math.max(this.textarea.scrollWidth, this.container.clientWidth - this.linesContainer.scrollWidth) + "px";
         this.textarea.style.height = this.linesContainer.scrollHeight + "px";
     }
 

@@ -5,15 +5,13 @@
 }
 
 .editor-lines {
-    min-width: 28px;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
     padding: 2px;
+    padding-right: 8px;
     text-align: right;
     user-select: none;
-}
-
-.editor-line {
-    display: block;
-    padding-right: 6px;
 }
 
 .editor-textarea {
@@ -22,8 +20,8 @@
     resize: none;
     border: none;
     text-wrap: nowrap;
-    flex: auto;
-    overflow-y: hidden;
+    flex: none;
+    overflow: hidden;
     box-sizing: border-box;
     margin: 0;
 }
