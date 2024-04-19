@@ -3,6 +3,7 @@ import parse from "./parser.js";
 
 export default class Emulator extends EventTarget {
     pos = 0;
+    swap = 0n;
     reg = Object.fromEntries(Object.values(REG).map((reg) => [reg, 0n]));
     flags = { zero: false, sign: false };
     breakpoints = new Set();
@@ -14,6 +15,10 @@ export default class Emulator extends EventTarget {
 
     mov_RV(reg, val) {
         this.reg[reg] = val;
+    }
+
+    swp(reg) {
+        [this.reg[reg], this.swap] = [this.swap, this.reg[reg]];
     }
 
     add_RR(reg1, reg2) {
@@ -121,6 +126,7 @@ export default class Emulator extends EventTarget {
     }
 
     reset() {
+        this.swap = 0n;
         for (const reg in this.reg)
             this.reg[reg] = 0n;
         for (const flag in this.flags)

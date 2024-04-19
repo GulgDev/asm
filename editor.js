@@ -84,8 +84,8 @@ export default class Editor extends EventTarget {
             this.linesContainer.appendChild(line);
         }
         while (this.linesContainer.childElementCount > lineCount) {
-            this.linesContainer.lastElementChild.remove();
             this.dispatchEvent(new CustomEvent("lineremove", { detail: this.linesContainer.childElementCount }));
+            this.linesContainer.lastElementChild.remove();
         }
         this.textarea.style.width = Math.max(this.textarea.scrollWidth, this.container.clientWidth - this.linesContainer.scrollWidth) + "px";
         this.textarea.style.height = this.linesContainer.scrollHeight + "px";

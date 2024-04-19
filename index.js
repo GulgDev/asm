@@ -54,7 +54,7 @@ for (const [name, reg] of Object.entries(REG)) {
             valueCell.innerText = emulator.reg[reg];
             return;
         }
-        const val = Number.parseInt(valueCell.innerText);
+        const val = BigInt(valueCell.innerText);
         valueCell.innerText = val;
         emulator.mov_RV(reg, val);
         device.update();

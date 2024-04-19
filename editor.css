@@ -9,9 +9,12 @@
     flex-direction: column;
     width: fit-content;
     padding: 2px;
-    padding-right: 8px;
     text-align: right;
     user-select: none;
+}
+
+.editor-lines > span {
+    padding-right: 6px;
 }
 
 .editor-textarea {

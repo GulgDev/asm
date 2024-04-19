@@ -11,6 +11,9 @@ const commands = {
         mov_RR: [ARG.REG, ARG.REG],
         mov_RV: [ARG.REG, ARG.VAL]
     },
+    swp: {
+        swp: [ARG.REG]
+    },
     add: {
         add_RR: [ARG.REG, ARG.REG],
         add_RV: [ARG.REG, ARG.VAL]
@@ -81,12 +84,13 @@ export default function parse(code) {
     for (const [name, value] of Object.entries(CONST))
         code = code.replace(new RegExp("\\b" + name + "\\b", "g"), value);
     const lines = code.split("\n");
-    for (const lineNumber in lines) {
-        let line = lines[lineNumber].replace(/;.*$/, "").trim();
+    const lineCount = lines.length;
+    for (let i = 0; i < lineCount; ++i) {
+        let line = lines[i].replace(/;.*$/, "").trim();
         if (line.endsWith(":")) {
             const label = line.slice(0, -1);
             if (LABEL_REGEX.test(label) && !labels[label]) {
-                labels[label] = lineNumber;
+                labels[label] = i;
                 program.push({ op: "nop" });
                 continue;
             } else {
@@ -113,8 +117,8 @@ export default function parse(code) {
             if (argTypes.length !== argc)
                 continue;
             parsedArgs = [];
-            for (let i = 0; i < argc; ++i) {
-                const arg = parseArg(argTypes[i], args[i]);
+            for (let j = 0; j < argc; ++j) {
+                const arg = parseArg(argTypes[j], args[j]);
                 if (arg === undefined)
                     continue parseArgs;
                 parsedArgs.push(arg);
