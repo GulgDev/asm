@@ -153,7 +153,6 @@ code {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    text-align: center;
 }
 
 #reg-table {
@@ -161,8 +160,26 @@ code {
     margin: 16px;
 }
 
+#debug-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+}
+
+.debug-buttons-disabled {
+    pointer-events: none;
+    filter: brightness(0.5) saturate(0.5);
+}
+
 #resume-button {
-    font-size: 16px;
+    background-image: url(resume.svg);
+    cursor: pointer;
+}
+
+#step-button {
+    background-image: url(step.svg);
+    cursor: pointer;
 }
 
 #calculator {

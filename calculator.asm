@@ -80,6 +80,7 @@ op:
         jnz div
 
         ; Умножение
+
         mov d, 1 ; Знак результата
 
         tst out ; Проверяем out
@@ -112,8 +113,10 @@ op:
         xor out, -1 ; Инвертируем результат
         add out, 1
         jmp calculate_end
-    div:
-        ; Деление
+    div: ; Деление
+    
+        mov b, 1
+
         mov d, 1 ; Знак результата
 
         tst out ; Проверяем out
@@ -129,20 +132,30 @@ op:
         xor d, 1
     div_negative_check_end:
 
-        mov b, 1 ; Последовательно делим
+    div_shl_loop:
+        shl out, 1
+        mov c, a
+        sub c, out
+        jlz div_shl_loop_end
+        shl b, 1
+        jmp div_shl_loop
+    div_shl_loop_end:
+        shr out, 1
+
         mov c, 0
-        div_loop:
-            sub a, out
-            jlz div_loop_lt
-            add c, b
-            jmp div_loop_inc
-        div_loop_lt:
-            add a, out
-        div_loop_inc:
-            shl out, 1
-            shl b, 1
-            tst a
-            jgz div_loop
+
+    div_loop:
+        sub a, out
+        jgz div_loop_gt
+        add a, out
+        jmp div_loop_check_end
+    div_loop_gt:
+        add c, b
+    div_loop_check_end:
+
+        shr out, 1
+        shr b, 1
+        jgz div_loop
         
         mov out, c
 

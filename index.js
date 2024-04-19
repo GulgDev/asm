@@ -34,7 +34,9 @@ class Calculator {
     }
 }
 
+const debugButtons = document.getElementById("debug-buttons");
 const resumeButton = document.getElementById("resume-button");
+const stepButton = document.getElementById("step-button");
 
 const regTBody = document.getElementById("reg-table").createTBody();
 for (const [name, reg] of Object.entries(REG)) {
@@ -88,11 +90,12 @@ emulator.addEventListener("breakpoint", ({ detail: lineno }) => {
     const line = editor.getLine(lineno);
     line.classList.add("breakpoint-current");
     line.scrollIntoViewIfNeeded();
-    resumeButton.disabled = false;
+    debugButtons.classList.remove("debug-buttons-disabled");
 });
 emulator.addEventListener("done", () => {
     updateRegTable();
     device.update();
+    debugButtons.classList.add("debug-buttons-disabled");
 });
 
 const editor = new Editor(document.getElementById("editor"));
@@ -115,8 +118,14 @@ resumeButton.addEventListener("click", () => {
     if (!currentBreakpoint)
         return;
     currentBreakpoint.classList.remove("breakpoint-current");
-    resumeButton.disabled = true;
+    debugButtons.classList.add("debug-buttons-disabled");
     emulator.resume();
+});
+
+stepButton.addEventListener("click", () => {
+    emulator.step();
+    updateRegTable();
+    device.update();
 });
 
 const stageDescriptions = document.getElementById("stage-descriptions");

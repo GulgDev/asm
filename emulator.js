@@ -146,6 +146,7 @@ export default class Emulator extends EventTarget {
         }
 
         this.skipBreakpoint = false;
+        this.isRunning = true;
         this.resume();
     }
 
@@ -161,22 +162,28 @@ export default class Emulator extends EventTarget {
     }
 
     resume() {
-        this.isRunning = true;
-        const programSize = this.program.length;
-        while (this.ip < programSize) {
-            const lineno = this.ip + 1;
-            if (!this.skipBreakpoint && this.breakpoints.has(lineno)) {
-                this.skipBreakpoint = true;
-                this.dispatchEvent(new CustomEvent("breakpoint", { detail: lineno }));
-                return;
-            }
-            this.skipBreakpoint = false;
-            const { op, args } = this.program[this.ip++];
-            if (op !== "nop" && op !== "err")
-                this[op].apply(this, args);
+        while (this.step()) { }
+    }
+
+    step() {
+        if (!this.isRunning)
+            return false;
+        const lineno = this.ip + 1;
+        if (!this.skipBreakpoint && this.breakpoints.has(lineno)) {
+            this.skipBreakpoint = true;
+            this.dispatchEvent(new CustomEvent("breakpoint", { detail: lineno }));
+            return false;
         }
-        this.dispatchEvent(new Event("done"));
-        this.isRunning = false;
+        this.skipBreakpoint = false;
+        const { op, args } = this.program[this.ip++];
+        if (op !== "nop" && op !== "err")
+            this[op].apply(this, args);
+        if (this.ip >= this.program.length) {
+            this.dispatchEvent(new Event("done"));
+            this.isRunning = false;
+            return false;
+        }
+        return true;
     }
 
     finish() {
