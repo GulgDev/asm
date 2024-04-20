@@ -44,7 +44,7 @@ op:
     swp d
     mov a, d
     and a, 2
-    jnz minus_check
+    jz minus_check
     tst out
     jnz calculate
     minus_check:
