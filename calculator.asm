@@ -120,6 +120,7 @@ op:
         mov d, 1 ; Знак результата
 
         tst out ; Проверяем out
+        jz error ; Нельзя делить на ноль!
         jgz div_negative_check_a
         xor out, -1 ; Если out < 0, инвертируем знак результата и делаем out положительным
         add out, 1
@@ -201,5 +202,10 @@ key_15: ; Если нажата кнопка "C"
     add out, 6
     shr out, 4
     add out, a
+    jmp exit
+
+error: ; Вывести ошибку на экран
+    mov out, ERROR
+    jmp exit
 
 exit:
