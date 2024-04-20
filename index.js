@@ -19,6 +19,7 @@ class Calculator {
     input(keyCode) {
         if (emulator.isRunning)
             return;
+        this.editor.readOnly = true;
         this.emulator.mov_RV(REG.IN, BigInt(keyCode));
         this.emulator.exec(this.editor.value);
     }
@@ -91,11 +92,14 @@ emulator.addEventListener("breakpoint", ({ detail: lineno }) => {
     line.classList.add("breakpoint-current");
     line.scrollIntoViewIfNeeded();
     debugButtons.classList.remove("debug-buttons-disabled");
+    editor.highlightLine(lineno);
 });
 emulator.addEventListener("done", () => {
     updateRegTable();
     device.update();
     debugButtons.classList.add("debug-buttons-disabled");
+    editor.removeHighlighting();
+    editor.readOnly = false;
 });
 
 const editor = new Editor(document.getElementById("editor"));
@@ -114,18 +118,18 @@ document.querySelectorAll("[data-keycode]").forEach((button) => {
 });
 
 resumeButton.addEventListener("click", () => {
-    const currentBreakpoint = document.getElementsByClassName("breakpoint-current").item(0);
-    if (!currentBreakpoint)
-        return;
-    currentBreakpoint.classList.remove("breakpoint-current");
+    document.getElementsByClassName("breakpoint-current").item(0)?.classList.remove("breakpoint-current");
     debugButtons.classList.add("debug-buttons-disabled");
+    editor.removeHighlighting();
     emulator.resume();
 });
 
 stepButton.addEventListener("click", () => {
+    document.getElementsByClassName("breakpoint-current").item(0)?.classList.remove("breakpoint-current");
     emulator.step();
     updateRegTable();
     device.update();
+    editor.highlightLine(emulator.ip + 1);
 });
 
 const stageDescriptions = document.getElementById("stage-descriptions");

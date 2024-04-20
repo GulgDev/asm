@@ -5,6 +5,10 @@ export default class Editor extends EventTarget {
         super();
         this.container = container;
         container.classList.add("editor");
+        this.highlighting = document.createElement("div");
+        this.highlighting.className = "editor-highlighting";
+        this.highlighting.style.display = "none";
+        container.appendChild(this.highlighting);
         this.linesContainer = document.createElement("div");
         this.linesContainer.className = "editor-lines";
         container.appendChild(this.linesContainer);
@@ -64,6 +68,14 @@ export default class Editor extends EventTarget {
         this.render();
     }
 
+    get readOnly() {
+        return this.textarea.readOnly;
+    }
+
+    set readOnly(value) {
+        this.textarea.readOnly = value;
+    }
+
     replace(start, end, value) {
         this.textarea.selectionStart = start;
         this.textarea.selectionEnd = end;
@@ -87,11 +99,21 @@ export default class Editor extends EventTarget {
             this.dispatchEvent(new CustomEvent("lineremove", { detail: this.linesContainer.childElementCount }));
             this.linesContainer.lastElementChild.remove();
         }
-        this.textarea.style.width = Math.max(this.textarea.scrollWidth, this.container.clientWidth - this.linesContainer.scrollWidth) + "px";
+        this.highlighting.style.width = this.textarea.style.width = Math.max(this.textarea.scrollWidth, this.container.clientWidth - this.linesContainer.scrollWidth) + "px";
         this.textarea.style.height = this.linesContainer.scrollHeight + "px";
+        this.highlighting.style.left = this.linesContainer.scrollWidth + "px";
     }
 
     getLine(index) {
         return this.linesContainer.children.item(index - 1);
+    }
+
+    highlightLine(index) {
+        this.highlighting.style.display = "block";
+        this.highlighting.style.top = this.getLine(index).offsetTop + "px";
+    }
+
+    removeHighlighting() {
+        this.highlighting.style.display = "none";
     }
 }

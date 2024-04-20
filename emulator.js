@@ -145,9 +145,9 @@ export default class Emulator extends EventTarget {
             return;
         }
 
-        this.skipBreakpoint = false;
         this.isRunning = true;
-        this.resume();
+        if (!this.checkBreakpoint())
+            this.resume();
     }
 
     toggleBreakpoint(i) {
@@ -161,6 +161,15 @@ export default class Emulator extends EventTarget {
         this.breakpoints.delete(i);
     }
 
+    checkBreakpoint() {
+        const lineno = this.ip + 1;
+        if (this.breakpoints.has(lineno)) {
+            this.dispatchEvent(new CustomEvent("breakpoint", { detail: lineno }));
+            return true;
+        }
+        return false;
+    }
+
     resume() {
         while (this.step()) { }
     }
@@ -168,12 +177,6 @@ export default class Emulator extends EventTarget {
     step() {
         if (!this.isRunning)
             return false;
-        const lineno = this.ip + 1;
-        if (!this.skipBreakpoint && this.breakpoints.has(lineno)) {
-            this.skipBreakpoint = true;
-            this.dispatchEvent(new CustomEvent("breakpoint", { detail: lineno }));
-            return false;
-        }
         this.skipBreakpoint = false;
         const { op, args } = this.program[this.ip++];
         if (op !== "nop" && op !== "err")
@@ -183,6 +186,8 @@ export default class Emulator extends EventTarget {
             this.isRunning = false;
             return false;
         }
+        if (this.checkBreakpoint())
+            return false;
         return true;
     }
 
