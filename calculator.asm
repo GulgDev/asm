@@ -146,11 +146,11 @@ op:
 
     div_loop:
         sub a, out
-        jgz div_loop_gt
-        add a, out
-        jmp div_loop_check_end
-    div_loop_gt:
+        jgz div_loop_lt
         add c, b
+        jmp div_loop_check_end
+    div_loop_lt:
+        add a, out
     div_loop_check_end:
 
         shr out, 1
