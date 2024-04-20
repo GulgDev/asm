@@ -146,7 +146,7 @@ op:
 
     div_loop:
         sub a, out
-        jgz div_loop_lt
+        jlz div_loop_lt
         add c, b
         jmp div_loop_check_end
     div_loop_lt:
