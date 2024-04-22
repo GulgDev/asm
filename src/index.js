@@ -1,39 +1,7 @@
-import { REG, CONST } from "./const.js";
+import { REG } from "./const.js";
 import Emulator from "./emulator.js";
 import Editor from "./editor.js";
-
-class Calculator {
-    constructor(emulator, editor) {
-        this.emulator = emulator;
-        this.editor = editor;
-        this.output = document.getElementById("calculator-output");
-    }
-
-    reset() {
-        if (emulator.isRunning)
-            return;
-        this.emulator.reset();
-        this.output.innerText = 0;
-    }
-
-    input(keyCode) {
-        if (emulator.isRunning)
-            return;
-        this.editor.readOnly = true;
-        this.emulator.mov_RV(REG.IN, BigInt(keyCode));
-        this.emulator.exec(this.editor.value);
-    }
-
-    update() {
-        let output = this.emulator.reg[REG.OUT];
-        for (const [name, value] of Object.entries(CONST))
-            if (output === value) {
-                output = name;
-                break;
-            }
-        this.output.innerText = output;
-    }
-}
+import Calculator from "./calculator.js";
 
 const debugButtons = document.getElementById("debug-buttons");
 const resumeButton = document.getElementById("resume-button");
@@ -110,11 +78,6 @@ editor.addEventListener("lineclick", ({ detail: { line, lineno } }) => {
 });
 editor.addEventListener("lineremove", ({ detail: lineno }) => {
     emulator.removeBreakpoint(lineno);
-});
-
-document.querySelectorAll("[data-keycode]").forEach((button) => {
-    button.addEventListener("click", () => device.input(button.getAttribute("data-keycode")));
-    button.classList.add("calculator-button-disabled");
 });
 
 resumeButton.addEventListener("click", () => {
@@ -319,10 +282,7 @@ function updateStage() {
     const title = document.createElement("h2");
     title.innerText = info.title;
     stageDescriptions.prepend(title);
-    document.querySelectorAll("[data-keycode]").forEach((button) => {
-        if (currentStage === lastStage || stages[currentStage].buttons?.includes(Number.parseInt(button.getAttribute("data-keycode"))))
-            button.classList.remove("calculator-button-disabled");
-    });
+    info.buttons?.forEach((button) => device.enableButton(button));
 }
 
 const savedStage = Number.parseInt(localStorage.getItem("currentStage") ?? 0);
@@ -353,4 +313,4 @@ window.skipTutorial = () => {
     updateStage();
 };
 
-window.device = new Calculator(emulator, editor);
+window.device = new Calculator(emulator, editor, document.getElementById("device"));
