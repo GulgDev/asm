@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>ASM</title>
-        <link rel="icon" href="/res/icon.png">
+        <link rel="icon" href="res/icon.png">
         <link rel="stylesheet" href="index.css">
         <script type="module" src="index.js"></script>
     </head>
@@ -16,95 +16,12 @@
         </div>
         <div id="editor"></div>
         <div id="debug-info">
-            <table id="reg-table"></table>
+            <table id="reg-table" class="table"></table>
             <div id="debug-buttons" class="debug-buttons-disabled">
                 <span id="resume-button" class="image"></span>
                 <span id="step-button" class="image"></span>
             </div>
         </div>
         <div id="device"></div>
-        <div class="calculator" style="position: absolute; z-index: 40;">
-            <div class="calculator-display">
-                <span class="calculator-output">0</span>
-            </div>
-            <div class="calculator-buttons">
-                <div class="calculator-buttons-row">
-                    <div>
-                        <div class="calculator-button" data-keycode="1">
-                            <span>1</span>
-                        </div>
-                        <div class="calculator-button" data-keycode="2">
-                            <span>2</span>
-                        </div>
-                        <div class="calculator-button" data-keycode="3">
-                            <span>3</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="calculator-button calculator-button-special" data-keycode="15">
-                            <span>C</span>
-                        </div>
-                        <div class="calculator-button calculator-button-special" onclick="reset()">
-                            <span>AC</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="calculator-buttons-row">
-                    <div>
-                        <div class="calculator-button" data-keycode="4">
-                            <span>4</span>
-                        </div>
-                        <div class="calculator-button" data-keycode="5">
-                            <span>5</span>
-                        </div>
-                        <div class="calculator-button" data-keycode="6">
-                            <span>6</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="calculator-button calculator-button-special" data-keycode="11">
-                            <span>+</span>
-                        </div>
-                        <div class="calculator-button calculator-button-special" data-keycode="12">
-                            <span>-</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="calculator-buttons-row">
-                    <div>
-                        <div class="calculator-button" data-keycode="7">
-                            <span>7</span>
-                        </div>
-                        <div class="calculator-button" data-keycode="8">
-                            <span>8</span>
-                        </div>
-                        <div class="calculator-button" data-keycode="9">
-                            <span>9</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="calculator-button calculator-button-special" data-keycode="13">
-                            <span>*</span>
-                        </div>
-                        <div class="calculator-button calculator-button-special" data-keycode="14">
-                            <span>/</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="calculator-buttons-row">
-                    <div>
-                        <span class="calculator-placeholder"></span>
-                        <div class="calculator-button" data-keycode="0">
-                            <span>0</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="calculator-button calculator-button-special" data-keycode="10">
-                            <span>=</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </body>
 </html>

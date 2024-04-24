@@ -1,12 +1,8 @@
 /**
- * @typedef {HTMLElement | Children[]} Children
- */
-
-/**
  * Create a DOM element with given parameters and children
  * @param {string} tagName 
  * @param {string?} className 
- * @param  {...Children} children 
+ * @param  {...HTMLElement} children 
  * @returns {HTMLElement}
  */
 export function createElement(tagName, className, ...children) {

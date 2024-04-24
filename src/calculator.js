@@ -1,7 +1,15 @@
 import { CONST, REG } from "./const.js";
 import { createElement, createSpan } from "./dom.js";
+import Editor from "./editor.js";
+import Emulator from "./emulator.js";
 
+/**  */
 export default class Calculator {
+    /**
+     * Button layout of calculator
+     * @type {[number[], { text: string, keyCode: number?, action: string? }[]][]}
+     * @private
+     */
     layout = [
         [
             [1, 2, 3],
@@ -30,8 +38,19 @@ export default class Calculator {
         ]
     ];
 
-    buttons = [];
+    /**
+     * Object to map key codes to buttons
+     * @type {Object.<string, HTMLElement>}
+     * @private
+     */
+    buttons = {};
 
+    /**
+     * 
+     * @param {Emulator} emulator 
+     * @param {Editor} editor 
+     * @param {HTMLElement} parent 
+     */
     constructor(emulator, editor, parent) {
         this.emulator = emulator;
         this.editor = editor;
@@ -49,12 +68,12 @@ export default class Calculator {
                     createElement("tr", null,
                         createElement("td", null,
                             createElement("div", null,
-                                digits.map((digit) => this.buildButtonDOM(digit, digit, false, () => this.input(digit)))
+                                ...digits.map((digit) => this.buildButtonDOM(digit, digit, false, () => this.input(digit)))
                             )
                         ),
                         createElement("td", null,
                             createElement("div", null,
-                                special.map(({ text, keyCode, action }) =>
+                                ...special.map(({ text, keyCode, action }) =>
                                     this.buildButtonDOM(text, keyCode, true,
                                         action == null ?
                                             () => this.input(keyCode) :

@@ -1,34 +1,15 @@
-@import url(/src/editor.css);
-@import url(/src/calculator.css);
+@import url(editor.css);
+@import url(calculator.css);
 
 @font-face {
     font-family: Digital-7;
-    src: url(/res/digital-7.ttf);
+    src: url(res/digital-7.ttf);
 }
 
 body {
     margin: 0;
     font-family: sans-serif;
 }
-
-/*table {
-    border-collapse: collapse;
-    margin: 8px auto;
-}
-
-td {
-    width: 40px;
-    padding: 8px;
-    text-align: center;
-}
-
-td:first-child {
-    border-right: 2px solid #ccc;
-}
-
-tr:not(:last-child) > td {
-    border-bottom: 2px solid #ccc;
-}*/
 
 td {
     padding: 0;
@@ -46,6 +27,25 @@ code {
 
 [contenteditable] {
     outline: none;
+}
+
+.table {
+    border-collapse: collapse;
+    margin: 8px auto;
+}
+
+.table td {
+    width: 40px;
+    padding: 8px;
+    text-align: center;
+}
+
+.table td:first-child {
+    border-right: 2px solid #ccc;
+}
+
+.table tr:not(:last-child) > td {
+    border-bottom: 2px solid #ccc;
 }
 
 .icon {
@@ -77,7 +77,7 @@ code {
     position: absolute;
     top: 4px;
     right: 4px;
-    background-image: url(/res/arrow.svg);
+    background-image: url(res/arrow.svg);
     cursor: pointer;
     transition: transform .75s;
 }
@@ -87,7 +87,7 @@ code {
     position: absolute;
     bottom: 4px;
     right: 4px;
-    background-image: url(/res/icon.png);
+    background-image: url(res/icon.png);
 }
 
 #sidebar.open {
@@ -103,7 +103,7 @@ code {
     position: absolute;
     top: 4px;
     right: 52px;
-    background-image: url(/res/run.svg);
+    background-image: url(res/run.svg);
     cursor: pointer;
 }
 
@@ -184,11 +184,11 @@ code {
 }
 
 #resume-button {
-    background-image: url(/res/resume.svg);
+    background-image: url(res/resume.svg);
     cursor: pointer;
 }
 
 #step-button {
-    background-image: url(/res/step.svg);
+    background-image: url(res/step.svg);
     cursor: pointer;
 }
