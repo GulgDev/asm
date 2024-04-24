@@ -1,0 +1,194 @@
+@import url(editor.css);
+@import url(calculator.css);
+
+@font-face {
+    font-family: Digital-7;
+    src: url(res/digital-7.ttf);
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+td {
+    padding: 0;
+}
+
+code {
+    display: block;
+    white-space: pre !important;
+    width: fit-content;
+    background-color: #eee;
+    border-radius: 4px;
+    padding: 4px;
+    margin: 8px 0;
+}
+
+[contenteditable] {
+    outline: none;
+}
+
+.table {
+    border-collapse: collapse;
+    margin: 8px auto;
+}
+
+.table td {
+    width: 40px;
+    padding: 8px;
+    text-align: center;
+}
+
+.table td:first-child {
+    border-right: 2px solid #ccc;
+}
+
+.table tr:not(:last-child) > td {
+    border-bottom: 2px solid #ccc;
+}
+
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+}
+
+#sidebar {
+    z-index: 2;
+    position: absolute;
+    left: -352px;
+    width: 400px;
+    height: 100vh;
+    box-sizing: border-box;
+    transition: left .75s;
+    background-color: #e2e2e2;
+}
+
+.image {
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#sidebar-toggle-button {
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-image: url(res/arrow.svg);
+    cursor: pointer;
+    transition: transform .75s;
+}
+
+#sidebar-logo {
+    display: block;
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background-image: url(res/icon.png);
+}
+
+#sidebar.open {
+    left: 0;
+}
+
+#sidebar.open #sidebar-toggle-button {
+    transform: rotateY(180deg);
+}
+
+#test-button {
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 52px;
+    background-image: url(res/run.svg);
+    cursor: pointer;
+}
+
+#skip-tutorial {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#stage-descriptions {
+    margin: 48px;
+    margin-left: 16px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    overflow-y: auto;
+    height: calc(100% - 64px);
+    white-space: pre-wrap;
+    font-family: inherit;
+}
+
+#stage-descriptions > span > * {
+    white-space: normal;
+}
+
+#device {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#editor {
+    position: absolute;
+    left: 48px;
+    width: 60vw;
+    height: 100vh;
+}
+
+.line-breakpoint {
+    background-color: #f44;
+    color: #fff;
+}
+
+.line-breakpoint.breakpoint-current {
+    background-color: #44f;
+}
+
+.line-error {
+    color: #f44;
+}
+
+.line-breakpoint.line-error {
+    background-color: #da4;
+}
+
+#debug-info {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+#reg-table {
+    font-size: 24px;
+    margin: 16px;
+}
+
+#debug-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+}
+
+.debug-buttons-disabled {
+    pointer-events: none;
+    filter: brightness(0.5) saturate(0.5);
+}
+
+#resume-button {
+    background-image: url(res/resume.svg);
+    cursor: pointer;
+}
+
+#step-button {
+    background-image: url(res/step.svg);
+    cursor: pointer;
+}

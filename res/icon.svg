@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 16.933333 16.933334"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <rect
+     style="fill:#eeeeee;fill-opacity:1;fill-rule:evenodd;stroke-width:1.04665"
+     id="rect10747"
+     width="12.7"
+     height="16.933334"
+     x="2.1166668"
+     y="-4.2529297e-07"
+     rx="1.5526645"
+     ry="1.5875" />
+  <g
+     id="g11390">
+    <rect
+       style="fill:#ffffff;fill-rule:evenodd;stroke-width:1.09564"
+       id="rect10851"
+       width="10.583333"
+       height="6.3499999"
+       x="3.1750002"
+       y="1.058333"
+       rx="1.5814177"
+       ry="1.7079312" />
+    <text
+       xml:space="preserve"
+       style="font-size:6.35px;line-height:1.25;font-family:Digital-7;-inkscape-font-specification:Digital-7;stroke-width:0.264583"
+       x="3.9639423"
+       y="6.3115149"
+       id="text4296"><tspan
+         id="tspan4294"
+         style="stroke-width:0.264583"
+         x="3.9639423"
+         y="6.3115149">ASM</tspan></text>
+  </g>
+  <g
+     id="g11377"
+     transform="translate(3.9687503,8.4666667)">
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017"
+       width="2.6458333"
+       height="2.1166668"
+       x="0"
+       y="0"
+       rx="0.51337069"
+       ry="0.48274857" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017-5"
+       width="2.6458333"
+       height="2.1166668"
+       x="3.175"
+       y="0"
+       rx="0.51337069"
+       ry="0.48274857" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017-5-7"
+       width="2.6458333"
+       height="2.1166668"
+       x="6.3499999"
+       y="2.220446e-16"
+       rx="0.51337069"
+       ry="0.48274857" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017-51"
+       width="2.6458333"
+       height="2.1166668"
+       x="-2.3841858e-07"
+       y="2.6458333"
+       rx="0.51337069"
+       ry="0.48274857" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017-5-0"
+       width="2.6458333"
+       height="2.1166668"
+       x="3.175"
+       y="2.6458333"
+       rx="0.51337069"
+       ry="0.48274857" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017-5-7-8"
+       width="2.6458333"
+       height="2.1166668"
+       x="6.3499999"
+       y="2.6458333"
+       rx="0.51337069"
+       ry="0.48274857" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017-51-8"
+       width="2.6458333"
+       height="2.1166668"
+       x="-2.3841858e-07"
+       y="5.2916665"
+       rx="0.51337069"
+       ry="0.48274857" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017-5-0-0"
+       width="2.6458333"
+       height="2.1166668"
+       x="3.175"
+       y="5.2916665"
+       rx="0.51337069"
+       ry="0.48274857" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;fill-rule:evenodd;stroke-width:0.995641"
+       id="rect11017-5-7-8-1"
+       width="2.6458333"
+       height="2.1166668"
+       x="6.3499999"
+       y="5.2916665"
+       rx="0.51337069"
+       ry="0.48274857" />
+  </g>
+</svg>

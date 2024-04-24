@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ASM</title>
+        <link rel="icon" href="res/icon.png">
+        <link rel="stylesheet" href="index.css">
+        <script type="module" src="index.js"></script>
+    </head>
+    <body>
+        <div id="sidebar">
+            <span id="sidebar-toggle-button" class="image" onclick="this.parentElement.classList.toggle('open')"></span>
+            <span id="sidebar-logo" class="image"></span>
+            <span id="test-button" class="image" onclick="test()"></span>
+            <span id="skip-tutorial" onclick="skipTutorial()">Пропустить обучение</span>
+            <div id="stage-descriptions"></div>
+        </div>
+        <div id="editor"></div>
+        <div id="debug-info">
+            <table id="reg-table" class="table"></table>
+            <div id="debug-buttons" class="debug-buttons-disabled">
+                <span id="resume-button" class="image"></span>
+                <span id="step-button" class="image"></span>
+            </div>
+        </div>
+        <div id="device"></div>
+    </body>
+</html>
